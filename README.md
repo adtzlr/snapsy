@@ -68,7 +68,8 @@ pytest -q tests/test_model.py
 
 ## Contributing
 Bug reports and pull requests are welcome. Please open an issue or PR in
-the repository.
+the repository. The package is in early development, expect breaking API changes until
+version 1.0.0.
 
 ## License
 See the `LICENSE` file.
