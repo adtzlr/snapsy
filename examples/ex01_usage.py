@@ -56,7 +56,7 @@ data = out[-5]
 # The results are used to plot the deformed FEM model along with a chosen cell-data.
 # Basic math, like transpose, can be applied to the model result. Any custom math-
 # function can also be applied on the arrays of the dicts by
-# :meth:`~snapsy.SnapshotModel.apply`.
+# :meth:`~snapsy.ModelResult.apply`.
 import numpy as np
 
 field[0].values[:] = data.point_data["u"]
