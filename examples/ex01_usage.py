@@ -62,6 +62,6 @@ import numpy as np
 field[0].values[:] = data.point_data["u"]
 view = field.view(
     point_data=data.point_data,
-    cell_data=data.apply(np.mean)(axis=-2).T.cell_data,
+    cell_data=data.apply(np.mean, on_point_data=False)(axis=-2).T.cell_data,
 )
 view.plot("E", component=0).show()
