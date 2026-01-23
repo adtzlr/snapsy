@@ -48,11 +48,25 @@ def evaluate_data(
     out = dict()
 
     if method == "griddata":
-        from scipy.interpolate import griddata as interp
+        from scipy.interpolate import griddata
+
+        def interp(points, values, xi, **kwargs):
+
+            # griddata requires points and xi as 1d array for dim=1
+            if len(points.shape) == 2 and points.shape[1] == 1:
+                points = points.ravel()
+
+            if len(xi.shape) == 2 and xi.shape[1] == 1:
+                xi = xi.ravel()
+
+            return griddata(points, values, xi, **kwargs)
+
     elif method == "rbf":
         from scipy.interpolate import RBFInterpolator
 
         def interp(points, values, xi, **kwargs):
+
+            # RBFInterpolator requires points and xi as 2d array, also for dim=1
             if len(points.shape) == 1:
                 points = points.reshape(-1, 1)
 

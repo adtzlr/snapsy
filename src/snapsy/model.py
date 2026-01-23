@@ -36,9 +36,9 @@ class SnapshotModel:
 
     Notes
     -----
-    The surrogate model is a snapshot-based POD surrogate with interpolation of modal
-    coefficients and is based on [1]_, with a selection of the maximum number of
-    modes as outlined in [2]_.
+    The surrogate model is a snapshot-based proper orthogonal decomposition (POD)
+    surrogate with interpolation of modal coefficients and is based on [1]_, with a
+    selection of the maximum number of modes as outlined in [2]_.
 
     ..  list-table:: Naming conventions
         :header-rows: 1

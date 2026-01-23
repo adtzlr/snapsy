@@ -41,14 +41,50 @@ Dependencies: `numpy` and `scipy` (and `pytest` for running tests).
 ## Quickstart
 A minimal example:
 
+### Array-based input data
 ```python
 import numpy as np
 import snapsy
 
-snapshots = np.linspace(0, 1, num=5).reshape(-1, 1)
-point_data = {"u": np.random.rand(5, 9, 3)}  # 5 snapshots, 9 points, 3 dim
-cell_data = {"E": np.random.rand(5, 4, 6)}  # 5 snapshots, 4 cells, 6 dim
+snapshots = np.linspace(0, 1, num=5).reshape(-1, 1)  # 5 snapshots, 1 parameter
+point_data = {"displacement": np.random.rand(5, 9, 3)}  # 5 snapshots, 9 points, 3 dim
+cell_data = {"strain": np.random.rand(5, 4, 6)}  # 5 snapshots, 4 cells, 6 dim
 field_data = {"id": 1001}  # time-independent data
+
+model = snapsy.SnapshotModel(
+    snapshots=snapshots,
+    point_data=point_data,
+    cell_data=cell_data,
+    field_data=field_data,
+    # use_surrogate=False,  # use a POD surrogate model
+    # modes=(2, 10),  # min- and max no. of modes for surrogate model
+)
+
+signal = np.linspace(0, 1, num=20).reshape(-1, 1)  # 20 items, 1 parameter
+
+# `res` is a `ModelResult` object with `point_data`, `cell_data` and `field_data`.
+res = model.evaluate(signal)
+```
+
+### List-based input data
+If your data is list-based, the model can also import lists of dicts, with per-snapshot
+list items. Model results also support indexing and a conversion to lists of dicts.
+
+```python
+import numpy as np
+import snapsy
+
+snapshots = np.linspace(0, 1, num=3).reshape(-1, 1)  # 3 snapshots, 1 parameter
+point_data = [
+    {"displacement": np.random.rand(6, 2)},  # 1. snapshot, 6 points, 2 dim
+    {"displacement": np.random.rand(6, 2)},  # 2. snapshot, 6 points, 2 dim
+    {"displacement": np.random.rand(6, 2)},  # 3. snapshot, 6 points, 2 dim
+]
+cell_data = [
+    {"strain": np.random.rand(4, 2, 2)},  # 1. snapshot, 4 cells, (2, 2) dim
+    {"strain": np.random.rand(4, 2, 2)},  # 2. snapshot, 4 cells, (2, 2) dim
+    {"strain": np.random.rand(4, 2, 2)},  # 3. snapshot, 4 cells, (2, 2) dim
+]
 
 model = snapsy.SnapshotModel(
     snapshots=snapshots,
@@ -57,11 +93,15 @@ model = snapsy.SnapshotModel(
     field_data=field_data,
 )
 
-signal = np.linspace(0, 1, num=20).reshape(-1, 1)
+# `res` with `point_data`, `cell_data` and `field_data` for step 5.
+res = model.evaluate(signal)[5]
+```
 
-# `res` is a `ModelResult` object with `point_data`, `cell_data` and `field_data`.
-res = model.evaluate(signal)
+A NumPy-function may be applied to the model result data on all time-dependent arrays.
+E.g. the mean over all points and cells (here, the first axis) is evaluated by:
 
+```python
+res_mean = res.apply(np.mean)(axis=0)
 ```
 
 ## Tests

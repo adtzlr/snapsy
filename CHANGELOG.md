@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 - Fix tests.
+- Fix 1d- and 2d-input shapes, including one-dimensional snapshots and signals.
 
 ## [0.1.0] - 2026-01-22
 
