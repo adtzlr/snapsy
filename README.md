@@ -97,14 +97,14 @@ model = snapsy.SnapshotModel(
 )
 
 # `res` with `point_data`, `cell_data` and `field_data` for step 5.
-res = model.evaluate(signal)[5]
+res_5 = model.evaluate(signal)[5]
 ```
 
-A NumPy-function may be applied to the model result data on all time-dependent arrays.
-E.g. the mean over all cells (here, the first axis) is evaluated by:
+Any NumPy-function may be applied to the model result data on all time-dependent arrays.
+E.g., the mean over all cells (here, the first axis) of the cell-data is evaluated by:
 
 ```python
-res_mean = res.apply(np.mean, on_point_data=False, on_cell_data=True)(axis=0)
+res_5_mean = res_5.apply(np.mean, on_point_data=False, on_cell_data=True)(axis=0)
 ```
 
 ## Tests
