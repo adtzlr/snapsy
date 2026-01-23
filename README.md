@@ -13,7 +13,8 @@ simulation data along arbitrary parameter or signal paths.
 ## ✨ Overview
 `snapsy` provides a lightweight API to manage time-dependent point- and cell-data
 and time-independent field-data across snapshots and to interpolate that data on new
-signals. The central class is `SnapshotModel`.
+signals. The central class is
+[`SnapshotModel`](https://snapsy.readthedocs.io/en/latest/snapsy.html#snapsy.SnapshotModel).
 
 **Highlights**
 
