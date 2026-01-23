@@ -42,7 +42,8 @@ Dependencies: `numpy` and `scipy` (and `pytest` for running tests).
 A minimal example. Snapshots must have shapes `(n_snapshots, n_dim)`, point- and cell-
 data `(n_snapshots, ...)` and the dimension of the signal must be compatible with
 snapshots, i.e. `(n_steps, n_dim)`. The second dimension of snapshots and the signal
-are optional, 1d-arrays are also supported.
+are optional, 1d-arrays are also supported. The model result will be of shape
+`(n_steps, ...)`.
 
 ### Array-based input data
 ```python
