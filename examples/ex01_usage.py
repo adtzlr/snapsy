@@ -1,6 +1,6 @@
 r"""
-Quickstart
-----------
+FEM result interpolation
+------------------------
 First, let's create and run a simple FEM model with FElupe. A record-function collects
 the point- and cell-data dicts at the snapshots.
 """
