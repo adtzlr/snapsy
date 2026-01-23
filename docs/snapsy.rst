@@ -8,7 +8,7 @@ API Reference
 .. autosummary::
 
    SnapshotModel
-   models.ModelResult
+   ModelResult
 
 
 **Detailed API Reference**
