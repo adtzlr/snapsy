@@ -1,6 +1,6 @@
 import numpy as np
 
-from .typing import SurrogateParameters
+from .models import SurrogateParameters
 
 
 def fit_surrogate_parameters(data, modes, threshold, **kwargs):

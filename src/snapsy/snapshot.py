@@ -2,7 +2,7 @@ import numpy as np
 
 from .evaluate import evaluate_data
 from .surrogate import fit_surrogate_parameters
-from .typing import ModelResult
+from .models import ModelResult
 
 
 class SnapshotModel:
@@ -322,7 +322,7 @@ class SnapshotModel:
 
         Returns
         -------
-        ModelResult
+        snapsy.ModelResult
             The model result with attributes for time-dependent (empty) ``point_data``,
             ``cell_data`` and time-independent ``field_data``.
         """

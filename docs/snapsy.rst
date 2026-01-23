@@ -8,7 +8,7 @@ API Reference
 .. autosummary::
 
    SnapshotModel
-   typing.ModelResult
+   models.ModelResult
 
 
 **Detailed API Reference**
@@ -18,7 +18,7 @@ API Reference
    :undoc-members:
    :inherited-members:
 
-.. autoclass:: snapsy.typing.ModelResult
+.. autoclass:: snapsy.ModelResult
    :members:
    :undoc-members:
    :inherited-members:

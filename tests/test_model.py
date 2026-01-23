@@ -117,7 +117,7 @@ def test_modelresult_apply_and_T():
     cell = {"E": np.arange(6).reshape(3, 2)}
     field = {"const": np.array([10.0])}
 
-    mr = snapsy.typing.ModelResult(point_data=point, cell_data=cell, field_data=field)
+    mr = snapsy.ModelResult(point_data=point, cell_data=cell, field_data=field)
 
     # apply mean over axis=1 should act on both point and cell data
     out = mr.apply(np.mean)(axis=1)
@@ -139,7 +139,7 @@ def test_modelresult_iteration_and_len():
     point = {"u": np.array([[1.0], [2.0], [3.0]])}
     cell = {"E": np.array([[10.0], [20.0], [30.0]])}
 
-    mr = snapsy.typing.ModelResult(point_data=point, cell_data=cell)
+    mr = snapsy.ModelResult(point_data=point, cell_data=cell)
 
     # len should reflect number of snapshots
     assert len(mr) == 3
