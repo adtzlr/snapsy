@@ -11,7 +11,7 @@ and time-independent field-data across snapshots and to interpolate that data on
 signals. The central class is `SnapshotModel`.
 
 <p align="center">
-  <img width="371" height="256" alt="Image" src="https://github.com/user-attachments/assets/69c748f6-1096-4f91-8217-7bc416be0f03" />
+  <img width="371" height="256" alt="Image" src="https://github.com/user-attachments/assets/0ab590ab-4c91-4093-a36c-22662a604401" />
 </p>
 
 ## Installation
