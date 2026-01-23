@@ -92,8 +92,7 @@ class SnapshotModel:
     signal are optional, 1d-arrays are also supported. The model result will be of shape
     ``(n_steps, ...)``.
 
-    Array-based input data
-    ~~~~~~~~~~~~~~~~~~~~~~
+    1. Array-based input data
 
     ..  plot:
         :context:
@@ -120,8 +119,7 @@ class SnapshotModel:
         # a `ModelResult` object with `point_data`, `cell_data` and `field_data`.
         res = model.evaluate(signal)
 
-    List-based input data
-    ~~~~~~~~~~~~~~~~~~~~~
+    2. List-based input data
 
     If the data is list-based, the model can also import lists of dicts, with per-
     snapshot list items. Model results also support indexing and a conversion to lists
