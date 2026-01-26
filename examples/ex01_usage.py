@@ -62,13 +62,10 @@ data = out[-5]
 # :meth:`~statescale.ModelResult.apply`.
 import numpy as np
 
-field[0].values[:] = data.point_data["u"]
-view = field.view(
-    point_data=data.point_data,
-    cell_data=data.apply(np.mean, on_point_data=False)(axis=-2).T.cell_data,
-)
-view.plot("E", component=0).show()
-
 data = data.apply(np.mean, on_point_data=False)(axis=-2)
 data = data.apply(np.transpose, on_point_data=False)()
-mesh = data.as_mesh(mesh=mesh)
+
+view = data.as_view(field=field, inplace=True, update="u")
+view.mesh  # PyVista UnstructuredGrid
+
+view.plot("E").show()
