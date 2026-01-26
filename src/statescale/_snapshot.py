@@ -201,6 +201,7 @@ class SnapshotModel:
             "griddata": GriddataKernel,
         }[kernel]
         self.kernel = Kernel(
+            snapshots=self.snapshots,
             point_data=self.point_data,
             cell_data=self.cell_data,
             **kwargs,

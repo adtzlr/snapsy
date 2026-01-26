@@ -4,12 +4,19 @@ import numpy as np
 
 
 @dataclass
+class GriddataKernelParameters:
+    "Griddata kernel parameters."
+
+    points: np.array
+    values: np.array
+
+
+@dataclass
 class GriddataKernelData:
     "Griddata kernel data."
 
     point_data: dict
     cell_data: dict
-    field_data: dict
 
 
 class GriddataKernel:
@@ -25,17 +32,39 @@ class GriddataKernel:
         Additional keyword arguments (not used).
     """
 
-    def __init__(self, point_data, cell_data, **kwargs):
+    def __init__(self, snapshots, point_data, cell_data, **kwargs):
         self.kernel_data = GriddataKernelData(
-            point_data={},
-            cell_data={},
-            field_data={},
+            point_data=self._calibrate(snapshots=snapshots, data=point_data),
+            cell_data=self._calibrate(snapshots=snapshots, data=cell_data),
         )
+
+    def _calibrate(self, snapshots, data):
+        """Calibrate the surrogate kernel.
+
+        Parameters
+        ----------
+        snapshots : np.ndarray
+            Snapshot points.
+        data : dict
+            Dict with snapshot data.
+
+        Returns
+        -------
+        GriddataKernelParameters
+            A dict with the griddata kernel parameters.
+        """
+        out = dict()
+
+        for label, values in data.items():
+            out[label] = GriddataKernelParameters(
+                points=snapshots,
+                values=values,
+            )
+
+        return out
 
     @staticmethod
     def evaluate(
-        snapshots,
-        values,
         xi,
         upscale,
         kernel_parameters,
@@ -44,9 +73,9 @@ class GriddataKernel:
         **kwargs,
     ):
 
-        values_taken = values
+        values_taken = kernel_parameters.values
 
         if indices is not None:
             values_taken = values_taken.take(indices=indices, axis=axis)
 
-        return upscale(snapshots, values_taken, xi, **kwargs)
+        return upscale(kernel_parameters.points, values_taken, xi, **kwargs)
