@@ -13,7 +13,7 @@ class GriddataKernelData:
 
 class GriddataKernel:
     """A griddata kernel.
-    
+
     Parameters
     ----------
     point_data : dict
@@ -37,7 +37,7 @@ class GriddataKernel:
         values,
         xi,
         upscale,
-        kernel_data=None,
+        kernel_parameters,
         indices=None,
         axis=None,
         **kwargs,
@@ -46,6 +46,6 @@ class GriddataKernel:
         values_taken = values
 
         if indices is not None:
-            values_taken = values_taken.take(indices=indices, axis=axis, **kwargs)
+            values_taken = values_taken.take(indices=indices, axis=axis)
 
-        return upscale(snapshots, values_taken, xi)
+        return upscale(snapshots, values_taken, xi, **kwargs)
