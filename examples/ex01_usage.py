@@ -14,7 +14,7 @@ field = fem.FieldContainer([fem.FieldPlaneStrain(region, dim=2)])
 boundaries = fem.dof.uniaxial(field, clamped=True)
 solid = fem.SolidBody(umat=fem.NeoHooke(mu=1, bulk=2), field=field)
 
-if fem.__version__.split(".")[0] < 10:
+if int(fem.__version__.split(".")[0]) < 10:
     boundaries, loadcase = boundaries
 
 snapshots = fem.math.linsteps([0, 1], num=3)
