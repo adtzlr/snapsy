@@ -3,14 +3,23 @@
 API Reference
 =============
 
+**Core**
+
 .. currentmodule:: statescale
 
 .. autosummary::
 
    SnapshotModel
    ModelResult
-   kernels.SurrogateKernel
-   kernels.GriddataKernel
+
+**Kernels**
+
+.. currentmodule:: statescale.kernels
+
+.. autosummary::
+
+   SurrogateKernel
+   GriddataKernel
 
 
 **Detailed API Reference**
