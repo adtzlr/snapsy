@@ -7,10 +7,12 @@ import numpy as np
 class SurrogateKernelParameters:
     "Surrogate kernel parameters."
 
+    points: np.array
     means: np.array
     U: np.array
     alpha: np.array
     modes: int
+    shape: tuple
 
 
 @dataclass
@@ -42,24 +44,28 @@ class SurrogateKernel:
             Default is 0.995.
     """
 
-    def __init__(self, point_data, cell_data, **kwargs):
+    def __init__(self, snapshots, point_data, cell_data, **kwargs):
 
         self.kernel_data = SurrogateKernelData(
             point_data=self._calibrate(
+                snapshots=snapshots,
                 data=point_data,
                 **kwargs,
             ),
             cell_data=self._calibrate(
+                snapshots=snapshots,
                 data=cell_data,
                 **kwargs,
             ),
         )
 
-    def _calibrate(self, data, modes=(2, 10), threshold=0.995):
+    def _calibrate(self, snapshots, data, modes=(2, 10), threshold=0.995):
         """Calibrate the surrogate kernel.
 
         Parameters
         ----------
+        snapshots : np.ndarray
+            Snapshot points.
         data : dict
             Dict with snapshot data.
         modes : 2-tuple of int or None, optional
@@ -94,18 +100,18 @@ class SurrogateKernel:
             alpha = centered @ U
 
             out[label] = SurrogateKernelParameters(
+                points=snapshots,
                 means=means,
                 U=U,
                 alpha=alpha,
                 modes=modes_used,
+                shape=values.shape[1:],
             )
 
         return out
 
     @staticmethod
     def evaluate(
-        snapshots,
-        values,
         xi,
         upscale,
         kernel_parameters,
@@ -115,14 +121,14 @@ class SurrogateKernel:
     ):
 
         alpha = upscale(
-            points=snapshots,
+            points=kernel_parameters.points,
             values=kernel_parameters.alpha,
             xi=xi,
             **kwargs,
         )
 
         means_taken = kernel_parameters.means
-        U_taken = kernel_parameters.U.T.reshape(-1, *values.shape[1:])
+        U_taken = kernel_parameters.U.T.reshape(-1, *kernel_parameters.shape)
 
         if indices is not None:
             U_taken = U_taken.take(indices=indices, axis=axis)

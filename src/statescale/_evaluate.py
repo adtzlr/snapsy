@@ -79,8 +79,6 @@ def evaluate_data(
 
     for label, values in data.items():
         out[label] = kernel_evaluate(
-            snapshots=snapshots,
-            values=values,
             xi=xi,
             upscale=upscale,
             kernel_parameters=kernel_data.get(label),
