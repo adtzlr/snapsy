@@ -106,6 +106,7 @@ class SnapshotModel:
                 field_data=field_data,
                 # kernel="surrogate",  # use a POD surrogate model
                 # modes=(2, 10),  # min- and max no. of modes for surrogate model
+                # threshold=0.999,  # min. energy threshold for surrogate model
             )
 
             signal = np.linspace(0, 1, num=20).reshape(-1, 1)  # 20 items, 1 parameter

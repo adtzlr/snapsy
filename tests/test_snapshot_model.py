@@ -49,6 +49,7 @@ def test_snapshot_model_list():
         point_data=point_data,
         cell_data=cell_data,
         field_data=field_data,
+        kernel="surrogate",
     )
 
     signal = np.linspace(0, 1, num=20).reshape(-1, 1)  # 20 items, 1 parameter
