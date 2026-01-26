@@ -57,6 +57,11 @@ def test_snapshot_model_list():
     # `point_data`, `cell_data` and `field_data` for step 5 of the signal.
     res = model.evaluate(signal, method="rbf", indices=[0, 1, 2], axis=1)
     assert res.cell_data["strain"].shape == (20, 3, 2, 2)
+    assert len(res) == 20
+
+    for r in res[:2]:
+        r.T
+        assert r.point_data["displacement"].shape == (3, 2)
 
     res_5 = res[5]
     assert res_5.point_data["displacement"].shape == (3, 2)
@@ -64,8 +69,11 @@ def test_snapshot_model_list():
     res_5 = model.evaluate(signal, method="rbf")[5]
     assert res_5.point_data["displacement"].shape == (6, 2)
 
-    res_5_mean = res_5.apply(np.mean, on_point_data=False, on_cell_data=True)(axis=0)
-    assert res_5.cell_data["strain"].shape == (4, 2, 2)
+    res_5_mean = res_5.apply(np.mean, on_point_data=True, on_cell_data=True)(axis=0)
+    assert res_5_mean.cell_data["strain"].shape == (2, 2)
+
+    res_5_mean_2 = res_5.mean(axis=0)
+    assert res_5_mean_2.cell_data["strain"].shape == (2, 2)
 
 
 if __name__ == "__main__":
