@@ -1,5 +1,6 @@
-import numpy as np
 from dataclasses import dataclass
+
+import numpy as np
 
 
 @dataclass
@@ -22,7 +23,7 @@ class SurrogateKernelData:
 
 class SurrogateKernel:
     """A surrogate kernel.
-    
+
     Parameters
     ----------
     point_data : dict
@@ -56,7 +57,7 @@ class SurrogateKernel:
 
     def _calibrate(self, data, modes=(2, 10), threshold=0.995):
         """Calibrate the surrogate kernel.
-        
+
         Parameters
         ----------
         data : dict

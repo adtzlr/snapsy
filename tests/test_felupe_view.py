@@ -1,7 +1,8 @@
-import statescale
 import felupe as fem
 import numpy as np
 import pytest
+
+import statescale
 
 
 def test_felupe_view():

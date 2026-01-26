@@ -3,8 +3,8 @@ This module contains various kernel implementations for the snapshot-driven stat
 upscaling framework.
 """
 
-from .surrogate import SurrogateKernel
 from .griddata import GriddataKernel
+from .surrogate import SurrogateKernel
 
 __all__ = [
     "SurrogateKernel",

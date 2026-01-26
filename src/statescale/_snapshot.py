@@ -1,8 +1,8 @@
 import numpy as np
 
-from ._evaluate import evaluate_data
 from ._containers import ModelResult
-from .kernels import SurrogateKernel, GriddataKernel
+from ._evaluate import evaluate_data
+from .kernels import GriddataKernel, SurrogateKernel
 
 
 class SnapshotModel:
