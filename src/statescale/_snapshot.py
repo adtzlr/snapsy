@@ -44,20 +44,8 @@ class SnapshotModel:
           - Snapshots
         * - ``d_s...``
           - Time-dependent data at snapshots with arbitrary trailing axes
-        * - ``mean(d)_...``
-          - Mean over all snapshots of data
-        * - ``Δd_s...``
-          - Centered data at snapshots
-        * - ``U_...m``
-          - Unitary matrix of U S Vh = svd(Δd_...s)
-        * - ``α_sm``
-          - Factors at snapshots to obtain the centered data
         * - ``x_ai``
           - Signal
-        * - ``α_am``
-          - Factors for the signal to obtain the centered data
-        * - ``Δd_a...``
-          - Centered data for the signal
         * - ``d_a...``
           - Data for the signal (with arbitrary trailing axes)
 
@@ -74,7 +62,7 @@ class SnapshotModel:
         * - ``m``
           - m-th mode of surrogate model
         * - ``a``
-          - a-th timestep of signal
+          - a-th (time-) step of signal
         * - ``...``
           - optional arbritrary trailing axes
 

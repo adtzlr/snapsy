@@ -24,7 +24,7 @@ class SurrogateKernelData:
 
 
 class SurrogateKernel:
-    """A surrogate kernel.
+    r"""A surrogate kernel.
 
     Parameters
     ----------
@@ -42,6 +42,110 @@ class SurrogateKernel:
         threshold : float, optional
             Default threshold to evaluate the number of modes for the surrogate model.
             Default is 0.995.
+
+    Notes
+    -----
+    The surrogate kernel is a snapshot-based proper orthogonal decomposition (POD)
+    surrogate with interpolation of modal coefficients and is based on [1]_, with a
+    selection of the maximum number of modes as outlined in [2]_.
+
+    ..  list-table:: Naming conventions
+        :header-rows: 1
+        :widths: 25 75
+
+        * - Symbol
+        - Description
+        * - ``x_si``
+        - Snapshots
+        * - ``d_s...``
+        - Time-dependent data at snapshots with arbitrary trailing axes
+        * - ``mean(d)_...``
+        - Mean over all snapshots of data
+        * - ``Δd_s...``
+        - Centered data at snapshots
+        * - ``U_...m``
+        - Unitary matrix of U S Vh = svd(Δd_...s)
+        * - ``α_sm``
+        - Factors at snapshots to obtain the centered data
+        * - ``x_ai``
+        - Signal
+        * - ``α_am``
+        - Factors for the signal to obtain the centered data
+        * - ``Δd_a...``
+        - Centered data for the signal
+        * - ``d_a...``
+        - Data for the signal (with arbitrary trailing axes)
+
+    ..  list-table:: Indices
+        :header-rows: 1
+        :widths: 25 75
+
+        * - Index
+        - Description
+        * - ``s``
+        - s-th snapshot
+        * - ``i``
+        - i-th vector component of snapshot / signal
+        * - ``m``
+        - j-th vector component of reshaped data
+        * - ``m``
+        - m-th mode of surrogate model
+        * - ``a``
+        - a-th timestep of signal
+        * - ``...``
+        - optional arbritrary trailing axes
+
+    First, the centered data at the snapshots is computed by subtracting the mean over
+    all snapshots.
+
+    ..  math::
+
+        \Delta d_{s...} = d_{s...} - \operatorname{mean}(d)_{...}
+
+    Then, a singular value decomposition (SVD) of the centered data is performed to
+    obtain the principal components (modes) of the data. The number of modes to be used
+    in the surrogate model is determined based on the provided mode range and the
+    threshold for the cumulative sum of singular values.
+
+    ..  math::
+
+        \Delta d_{js} = U_{jm} S_{mm} V^H_{ms}
+
+    ..  math::
+
+        \alpha_{sm} = \Delta d_{sj} U_{jm}
+
+    Next, the factors at the signal points are obtained by interpolating the modal
+    coefficients from the snapshots to the signal points using the provided upscale
+    function.
+
+    ..  math::
+
+        \alpha_{am} = \text{upscale}(x_{si}, \alpha_{sm}, x_{ai})
+
+    The factors at the snapshots are computed by projecting the centered data onto the
+    selected modes.
+
+    ..  math::
+
+        \Delta d_{aj} = \alpha_{am} U_{mj}
+
+    ..  math::
+
+        d_{a...} = \operatorname{mean}(d)_{...} + \Delta d_{a...}
+
+    Finally, these components are stored in
+    :class:`~statescale.kernels.SurrogateKernelParameters` for later use in the
+    surrogate model.
+
+    References
+    ----------
+    .. [1] J. S. Hesthaven and S. Ubbiali, "Non-intrusive reduced order modeling of
+            nonlinear problems using neural networks," Journal of Computational
+            Physics, vol. 363, pp. 55-78, 2018.
+    .. [2] P. Benner, S. Gugercin, and K. Willcox, "A survey of projection-based
+            model reduction methods for parametric dynamical systems," SIAM Review,
+            vol. 57, no. 4, pp. 483-531, 2015.
     """
 
     def __init__(self, snapshots, point_data, cell_data, **kwargs):
@@ -60,7 +164,7 @@ class SurrogateKernel:
         )
 
     def _calibrate(self, snapshots, data, modes=(2, 10), threshold=0.995):
-        """Calibrate the surrogate kernel.
+        r"""Calibrate the surrogate kernel.
 
         Parameters
         ----------
