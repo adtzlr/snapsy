@@ -209,19 +209,19 @@ class SnapshotModel:
             new_data[label] = np.array(list_of_data)
         return new_data
 
-    def save_model(self, filename="model.npy"):
-        np.save(filename, self)
+    def save_model(self, filename="model.npz"):
+        np.savez(filename, model=self)
 
-    def save_kernel(self, filename="kernel.npy"):
-        np.save(filename, self.kernel)
+    def save_kernel(self, filename="kernel.npz"):
+        np.savez(filename, kernel=self.kernel)
 
     @classmethod
     def load_model(cls, filename):
-        return np.load(filename, allow_pickle=True).item()
+        return np.load(filename, allow_pickle=True)["model"].item()
 
     @classmethod
     def load_kernel(cls, filename):
-        kernel = np.load(filename, allow_pickle=True).item()
+        kernel = np.load(filename, allow_pickle=True)["kernel"].item()
         return cls.from_kernel(kernel)
 
     @classmethod
