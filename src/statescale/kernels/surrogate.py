@@ -8,7 +8,6 @@ class SurrogateKernelParameters:
     "Surrogate kernel parameters."
 
     points: np.array
-    means: np.array
     U: np.array
     alpha: np.array
     modes: int
@@ -209,7 +208,6 @@ class SurrogateKernel:
 
             out[label] = SurrogateKernelParameters(
                 points=snapshots,
-                means=means,
                 U=U,
                 alpha=alpha,
                 modes=modes_used,
@@ -235,12 +233,12 @@ class SurrogateKernel:
             **kwargs,
         )
 
-        means_taken = kernel_parameters.means
         U_taken = kernel_parameters.U.T.reshape(-1, *kernel_parameters.shape)
 
         if indices is not None:
             U_taken = U_taken.take(indices=indices, axis=axis)
-            means_taken = means_taken.take(indices=indices, axis=axis)
 
-        centered_taken = np.einsum("am,m...->a...", alpha, U_taken)
-        return means_taken + centered_taken
+        alpha_mean = np.mean(alpha, axis=0, keepdims=True)
+
+        values_taken = np.einsum("am,m...->a...", alpha + alpha_mean, U_taken)
+        return values_taken
