@@ -246,8 +246,10 @@ class SnapshotModel:
             Points at which to interpolate data.
         method : str, optional
             Use ``"griddata"`` or ``"rbf"``. Default is ``"griddata"``.
-        **kwargs : dict
-            Optional keyword-arguments are passed to griddata.
+        **kwargs : dict, optional
+            Optional keyword-arguments are passed to the :meth:`evaluate` method of the
+            kernel. See :class:`~statescale.kernels.SurrogateKernel` and
+            :class:`~statescale.kernels.GriddataKernel` for more details.
 
         Returns
         -------
@@ -280,8 +282,10 @@ class SnapshotModel:
             array is used. Default is None.
         method : str, optional
             Use ``"griddata"`` or ``"rbf"``. Default is ``"griddata"``.
-        **kwargs : dict
-            Optional keyword-arguments are passed to griddata.
+        **kwargs : dict, optional
+            Optional keyword-arguments are passed to the :meth:`evaluate` method of the
+            kernel. See :class:`~statescale.kernels.SurrogateKernel` and
+            :class:`~statescale.kernels.GriddataKernel` for more details.
 
         Returns
         -------
@@ -321,8 +325,10 @@ class SnapshotModel:
             array is used. Default is None.
         method : str, optional
             Use ``"griddata"`` or ``"rbf"``. Default is ``"griddata"``.
-        **kwargs : dict
-            Optional keyword-arguments are passed to griddata.
+        **kwargs : dict, optional
+            Optional keyword-arguments are passed to the :meth:`evaluate` method of the
+            kernel. See :class:`~statescale.kernels.SurrogateKernel` and
+            :class:`~statescale.kernels.GriddataKernel` for more details.
 
         Returns
         -------
