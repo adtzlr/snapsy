@@ -90,20 +90,18 @@ class SurrogateKernel:
         * - ``i``
         - i-th vector component of snapshot / signal
         * - ``m``
-        - j-th vector component of reshaped data
+        - j-th vector component of flattened data
         * - ``m``
         - m-th mode of surrogate model
         * - ``a``
         - a-th timestep of signal
-        * - ``...``
-        - optional arbritrary trailing axes
 
     First, the centered data at the snapshots is computed by subtracting the mean over
     all snapshots.
 
     ..  math::
 
-        \Delta d_{s...} = d_{s...} - \operatorname{mean}(d)_{...}
+        \Delta d_{sj} = d_{sj} - \operatorname{mean}(d)_j
 
     Then, a singular value decomposition (SVD) of the centered data is performed to
     obtain the principal components (modes) of the data. The number of modes to be used
@@ -112,13 +110,13 @@ class SurrogateKernel:
 
     ..  math::
 
-        \Delta d_{js} = U_{jm} S_{mm} V^H_{ms}
+        \Delta d_{js} = U_{jm}\ S_{mm}\ V^H_{ms}
 
     ..  math::
 
-        \alpha_{sm} &= \Delta d_{sj} U_{jm}
+        \alpha_{sm} &= \Delta d_{sj}\ U_{jm}
 
-        \bar{\alpha}_{sm} &= \bar{d}_{sj} U_{jm}
+        \bar{\alpha}_{sm} &= \bar{d}_{sj}\ U_{jm}
 
     Next, the factors at the signal points are obtained by interpolating the modal
     coefficients from the snapshots to the signal points using the provided upscale
@@ -128,7 +126,7 @@ class SurrogateKernel:
 
         \alpha_{am} &= \text{upscale}(x_{si}, \alpha_{sm}, x_{ai})
 
-        \beta{am} &= \alpha_{am} + \bar{\alpha}_{am}
+        \beta_{am} &= \alpha_{am} + \bar{\alpha}_{am}
 
     The factors at the snapshots are computed by projecting the data onto the
     selected modes.
