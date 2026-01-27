@@ -80,11 +80,11 @@ def test_snapshot_model_list():
     res_5_mean_2 = res_5.mean(axis=0)
     assert res_5_mean_2.cell_data["strain"].shape == (2, 2)
 
-    model.save_model("model.npy")
-    m1 = model.load_model("model.npy")
+    model.save_model("model.npz")
+    m1 = model.load_model("model.npz")
 
-    model.save_kernel("kernel.npy")
-    m2 = model.load_kernel("kernel.npy")
+    model.save_kernel("kernel.npz")
+    m2 = model.load_kernel("kernel.npz")
 
 
 if __name__ == "__main__":
