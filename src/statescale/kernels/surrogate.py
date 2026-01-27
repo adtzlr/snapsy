@@ -8,9 +8,9 @@ class SurrogateKernelParameters:
     "Surrogate kernel parameters."
 
     points: np.array
-    means: np.array
     U: np.array
     alpha: np.array
+    alpha_mean: np.array
     modes: int
     shape: tuple
 
@@ -116,7 +116,9 @@ class SurrogateKernel:
 
     ..  math::
 
-        \alpha_{sm} = \Delta d_{sj} U_{jm}
+        \alpha_{sm} &= \Delta d_{sj} U_{jm}
+
+        \bar{\alpha}_{sm} &= \bar{d}_{sj} U_{jm}
 
     Next, the factors at the signal points are obtained by interpolating the modal
     coefficients from the snapshots to the signal points using the provided upscale
@@ -124,20 +126,18 @@ class SurrogateKernel:
 
     ..  math::
 
-        \alpha_{am} = \text{upscale}(x_{si}, \alpha_{sm}, x_{ai})
+        \alpha_{am} &= \text{upscale}(x_{si}, \alpha_{sm}, x_{ai})
 
-    The factors at the snapshots are computed by projecting the centered data onto the
+        \beta{am} &= \alpha_{am} + \bar{\alpha}_{am}
+
+    The factors at the snapshots are computed by projecting the data onto the
     selected modes.
 
     ..  math::
 
-        \Delta d_{aj} = \alpha_{am} U_{mj}
+        d_{aj} = \beta_{am} U_{mj}
 
-    ..  math::
-
-        d_{a...} = \operatorname{mean}(d)_{...} + \Delta d_{a...}
-
-    Finally, these components are stored in
+    Finally, the kernel parameters are stored in
     :class:`~statescale.kernels.SurrogateKernelParameters` for later use in the
     surrogate model.
 
@@ -206,12 +206,13 @@ class SurrogateKernel:
             U = U[:, :modes_used]
 
             alpha = centered @ U
+            alpha_mean = means.reshape(1, -1) @ U
 
             out[label] = SurrogateKernelParameters(
                 points=snapshots,
-                means=means,
                 U=U,
                 alpha=alpha,
+                alpha_mean=alpha_mean,
                 modes=modes_used,
                 shape=values.shape[1:],
             )
@@ -235,12 +236,12 @@ class SurrogateKernel:
             **kwargs,
         )
 
-        means_taken = kernel_parameters.means
         U_taken = kernel_parameters.U.T.reshape(-1, *kernel_parameters.shape)
 
         if indices is not None:
             U_taken = U_taken.take(indices=indices, axis=axis)
-            means_taken = means_taken.take(indices=indices, axis=axis)
 
-        centered_taken = np.einsum("am,m...->a...", alpha, U_taken)
-        return means_taken + centered_taken
+        beta = kernel_parameters.alpha_mean + alpha
+        values_taken = np.einsum("am,m...->a...", beta, U_taken)
+
+        return values_taken
