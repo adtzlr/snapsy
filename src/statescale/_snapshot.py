@@ -27,7 +27,7 @@ class SnapshotModel:
     kernel : str, optional
         The kernel to be used for interpolation. Either ``"surrogate"`` or
         ``"griddata"``. Default is ``"griddata"``.
-    **kwargs
+    **kwargs : dict, optional
         Additional keyword arguments for the calibration of the kernel. See
         :class:`~statescale.kernels.SurrogateKernel` and
         :class:`~statescale.kernels.GriddataKernel` for more details.
