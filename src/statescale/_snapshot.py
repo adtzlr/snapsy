@@ -173,6 +173,9 @@ class SnapshotModel:
         if cell_data is None:
             cell_data = dict()
 
+        if field_data is None:
+            field_data = dict()
+
         if isinstance(point_data, list):
             point_data = self.from_list(point_data)
 
@@ -192,6 +195,7 @@ class SnapshotModel:
             snapshots=self.snapshots,
             point_data=self.point_data,
             cell_data=self.cell_data,
+            field_data=self.field_data,
             **kwargs,
         )
 
@@ -205,12 +209,31 @@ class SnapshotModel:
             new_data[label] = np.array(list_of_data)
         return new_data
 
-    def save(self, filename):
+    def save_model(self, filename="model.npy"):
         np.save(filename, self)
 
+    def save_kernel(self, filename="kernel.npy"):
+        np.save(filename, self.kernel)
+
     @classmethod
-    def load(cls, filename):
+    def load_model(cls, filename):
         return np.load(filename, allow_pickle=True).item()
+
+    @classmethod
+    def load_kernel(cls, filename):
+        kernel = np.load(filename, allow_pickle=True).item()
+        return cls.from_kernel(kernel)
+
+    @classmethod
+    def from_kernel(cls, kernel):
+        model = cls(
+            snapshots=np.zeros(0),
+            point_data=None,
+            cell_data=None,
+            field_data=kernel.kernel_data.field_data,
+        )
+        model.kernel = kernel
+        return model
 
     def evaluate(self, xi, method="griddata", **kwargs):
         r"""Evaluate the point- and cell-data at xi.
@@ -266,8 +289,6 @@ class SnapshotModel:
         """
 
         point_data = evaluate_data(
-            snapshots=self.snapshots,
-            data=self.point_data,
             xi=xi,
             indices=indices,
             axis=axis,
@@ -309,8 +330,6 @@ class SnapshotModel:
         """
 
         cell_data = evaluate_data(
-            snapshots=self.snapshots,
-            data=self.cell_data,
             xi=xi,
             indices=indices,
             axis=axis,
