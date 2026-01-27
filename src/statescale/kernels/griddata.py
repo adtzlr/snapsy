@@ -17,6 +17,7 @@ class GriddataKernelData:
 
     point_data: dict
     cell_data: dict
+    field_data: dict
 
 
 class GriddataKernel:
@@ -28,14 +29,17 @@ class GriddataKernel:
         A dict of point data.
     cell_data : dict
         A dict of cell data.
+    field_data : dict
+        A dict of field data.
     **kwargs
         Additional keyword arguments (not used).
     """
 
-    def __init__(self, snapshots, point_data, cell_data, **kwargs):
+    def __init__(self, snapshots, point_data, cell_data, field_data, **kwargs):
         self.kernel_data = GriddataKernelData(
             point_data=self._calibrate(snapshots=snapshots, data=point_data),
             cell_data=self._calibrate(snapshots=snapshots, data=cell_data),
+            field_data=field_data,
         )
 
     def _calibrate(self, snapshots, data):

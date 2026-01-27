@@ -2,8 +2,6 @@ import numpy as np
 
 
 def evaluate_data(
-    snapshots,
-    data,
     xi,
     kernel_evaluate,
     kernel_data,
@@ -17,17 +15,12 @@ def evaluate_data(
 
     Parameters
     ----------
-    snapshots : np.array
-        Snapshots of shape (n_snapshots, n_dim). Note that a signal, used for the
-        evaluation of the data, must have equal n_dim.
-    data : dict
-        Dict with snapshot data.
     xi : np.array
         Points at which to interpolate data.
-    use_surrogate : bool
-        Use a surrogate model for interpolation.
-    kernel : SurrogateKernel or GriddataKernel
-        The kernel to be used for evaluation.
+    kernel_evaluate : Kernel.evaluate
+        The Kernel evaluate method to be used.
+    kernel_data : dict
+        A dict with the Kernel data to be interpolated.
     indices : array_like or None, optional
         The indices of the values to extract. Also allow scalars for indices.
         Default is None.
@@ -77,11 +70,11 @@ def evaluate_data(
 
     out = dict()
 
-    for label, values in data.items():
+    for label, kernel_parameters in kernel_data.items():
         out[label] = kernel_evaluate(
             xi=xi,
             upscale=upscale,
-            kernel_parameters=kernel_data.get(label),
+            kernel_parameters=kernel_parameters,
             indices=indices,
             axis=axis,
             **kwargs,

@@ -21,6 +21,7 @@ class SurrogateKernelData:
 
     point_data: dict
     cell_data: dict
+    field_data: dict
 
 
 class SurrogateKernel:
@@ -32,6 +33,8 @@ class SurrogateKernel:
         A dict of point data.
     cell_data : dict
         A dict of cell data.
+    field_data : dict
+        A dict of field data.
     **kwargs
         Additional keyword arguments for the calibration of the kernel.
 
@@ -148,7 +151,7 @@ class SurrogateKernel:
             vol. 57, no. 4, pp. 483-531, 2015.
     """
 
-    def __init__(self, snapshots, point_data, cell_data, **kwargs):
+    def __init__(self, snapshots, point_data, cell_data, field_data, **kwargs):
 
         self.kernel_data = SurrogateKernelData(
             point_data=self._calibrate(
@@ -161,6 +164,7 @@ class SurrogateKernel:
                 data=cell_data,
                 **kwargs,
             ),
+            field_data=field_data,
         )
 
     def _calibrate(self, snapshots, data, modes=(2, 10), threshold=0.995):
