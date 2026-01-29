@@ -33,6 +33,11 @@ class GriddataKernel:
         A dict of field data.
     **kwargs
         Additional keyword arguments (not used).
+
+    See Also
+    --------
+    statescale.SnapshotModel : A model with point-, cell- and field-data at snapshots
+        and with methods to interpolate the data at points of interest.
     """
 
     def __init__(self, snapshots, point_data, cell_data, field_data, **kwargs):

@@ -57,44 +57,44 @@ class SurrogateKernel:
         :widths: 25 75
 
         * - Symbol
-        - Description
+          - Description
         * - ``x_si``
-        - Snapshots
+          - Snapshots
         * - ``d_s...``
-        - Time-dependent data at snapshots with arbitrary trailing axes
+          - Time-dependent data at snapshots with arbitrary trailing axes
         * - ``mean(d)_...``
-        - Mean over all snapshots of data
+          - Mean over all snapshots of data
         * - ``Δd_s...``
-        - Centered data at snapshots
+          - Centered data at snapshots
         * - ``U_...m``
-        - Unitary matrix of U S Vh = svd(Δd_...s)
+          - Unitary matrix of U S Vh = svd(Δd_...s)
         * - ``α_sm``
-        - Factors at snapshots to obtain the centered data
+          - Factors at snapshots to obtain the centered data
         * - ``x_ai``
-        - Signal
+          - Signal
         * - ``α_am``
-        - Factors for the signal to obtain the centered data
+          - Factors for the signal to obtain the centered data
         * - ``Δd_a...``
-        - Centered data for the signal
+          - Centered data for the signal
         * - ``d_a...``
-        - Data for the signal (with arbitrary trailing axes)
+          - Data for the signal (with arbitrary trailing axes)
 
     ..  list-table:: Indices
         :header-rows: 1
         :widths: 25 75
 
         * - Index
-        - Description
+          - Description
         * - ``s``
-        - s-th snapshot
+          - s-th snapshot
         * - ``i``
-        - i-th vector component of snapshot / signal
+          - i-th vector component of snapshot / signal
         * - ``m``
-        - j-th vector component of flattened data
+          - j-th vector component of flattened data
         * - ``m``
-        - m-th mode of surrogate model
+          - m-th mode of surrogate model
         * - ``a``
-        - a-th timestep of signal
+          - a-th timestep of signal
 
     First, the centered data at the snapshots is computed by subtracting the mean over
     all snapshots.
@@ -138,6 +138,11 @@ class SurrogateKernel:
     Finally, the kernel parameters are stored in
     :class:`~statescale.kernels.SurrogateKernelParameters` for later use in the
     surrogate model.
+
+    See Also
+    --------
+    statescale.SnapshotModel : A model with point-, cell- and field-data at snapshots
+        and with methods to interpolate the data at points of interest.
 
     References
     ----------

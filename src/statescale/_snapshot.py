@@ -34,9 +34,6 @@ class SnapshotModel:
 
     Notes
     -----
-    The surrogate model is a snapshot-based proper orthogonal decomposition (POD)
-    surrogate with interpolation of modal coefficients and is based on [1]_, with a
-    selection of the maximum number of modes as outlined in [2]_.
 
     ..  list-table:: Naming conventions
         :header-rows: 1
@@ -148,15 +145,11 @@ class SnapshotModel:
             np.mean, on_point_data=False, on_cell_data=True
         )(axis=0)
 
-    References
-    ----------
-    ..  [1] L. Sirovich, "Turbulence and the dynamics of coherent structures. I.
-        Coherent structures", Quart. Appl. Math., vol. 45, no. 3, pp. 561–571, Oct.
-        1987, doi: https://doi.org/10.1090/qam/910462.
+    See Also
+    --------
+    statescale.kernels.SurrogateKernel : A surrogate kernel.
+    statescale.kernels.GriddataKernel : A griddata kernel.
 
-    ..  [2] P. Holmes, J. L. Lumley, and G. Berkooz, Turbulence, Coherent Structures,
-        Dynamical Systems and Symmetry, Cambridge, U.K.: Cambridge University Press,
-        1996. doi: https://doi.org/10.1017/CBO9780511622700.
     """
 
     def __init__(
