@@ -4,8 +4,8 @@ API Reference
 =============
 
 .. toctree::
-   :maxdepth: 1
-   :caption: statescale namespace:
+   :maxdepth: 3
+   :caption: API:
    
    api/model
    api/kernels
