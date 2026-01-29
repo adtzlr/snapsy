@@ -1,7 +1,7 @@
 statescale
 ----------
 
-.. currentmodule:: statescale.kernels
+.. currentmodule:: statescale
 
 .. autosummary::
 
