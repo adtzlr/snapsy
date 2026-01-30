@@ -8,6 +8,9 @@ def evaluate_data(
     indices=None,
     axis=None,
     method="griddata",
+    parallel=False,
+    n_jobs=-1,
+    backend="loky",
     **kwargs,
 ):
     r"""Evaluate the data at xi. Selected indices may be provided for a given
@@ -29,6 +32,12 @@ def evaluate_data(
         array is used. Default is None.
     method : str, optional
         Use ``"griddata"`` or ``"rbf"``. Default is ``"griddata"``.
+    parallel : bool, optional
+        A flag to invoke joblib parallel execution.
+    n_jobs : int, optional
+        Number of jobs for joblib parallel execution. Default is -1.
+    backend : str, optional
+        Backend for joblib parallel execution. Default is ``"loky"``.
     **kwargs : dict
         Optional keyword-arguments are passed to the interpolation method.
 
@@ -70,14 +79,34 @@ def evaluate_data(
 
     out = dict()
 
-    for label, kernel_parameters in kernel_data.items():
-        out[label] = kernel_evaluate(
-            xi=xi,
-            upscale=upscale,
-            kernel_parameters=kernel_parameters,
-            indices=indices,
-            axis=axis,
-            **kwargs,
+    if not parallel:
+
+        for label, kernel_parameters in kernel_data.items():
+            out[label] = kernel_evaluate(
+                xi=xi,
+                upscale=upscale,
+                kernel_parameters=kernel_parameters,
+                indices=indices,
+                axis=axis,
+                **kwargs,
+            )
+
+    else:
+
+        from joblib import Parallel, delayed
+
+        results = Parallel(n_jobs=n_jobs, backend=backend)(
+            delayed(kernel_evaluate)(
+                xi=xi,
+                upscale=upscale,
+                kernel_parameters=kernel_parameters,
+                indices=indices,
+                axis=axis,
+                **kwargs,
+            )
+            for kernel_parameters in kernel_data.values()
         )
+
+        out = dict(zip(kernel_data.keys(), results))
 
     return out
