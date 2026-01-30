@@ -44,6 +44,7 @@ dynamic = ["version"]
 dependencies = [
   "numpy",
   "scipy",
+  "joblib",
 ]
 
 [project.optional-dependencies]
